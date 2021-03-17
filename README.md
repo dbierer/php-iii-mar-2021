@@ -7,7 +7,7 @@
 * For Wed 16 Mar 2021
   * Get VM up and running
   * OPTIONAL: update phpMyAdmin
-     * https://github.com/dbierer/php-ii-mar-2021/blob/main/tools/phpmyadmin_510.sh
+     * Use `phpmyadmin_install.sh` in this repo
   * Setup Apache JMeter
   * Setup Jenkins CI
     * Need to install Jenkins 1st!
@@ -46,4 +46,61 @@ docker run -d -p 8080:8080 -p 50000:50000 -v jenkins_home:/var/jenkins_home jenk
   * https://github.com/dbierer/classic_php_examples/blob/master/date_time/date_time_date_period.php
 * Relative `DateInterval` formats
   * http://php.net/manual/en/datetime.formats.relative.php
-
+* Relative `DateInterval` formats
+  * http://php.net/manual/en/datetime.formats.relative.php
+* Method argument data type hints doesn't prevent property's data type from being changed
+  * See: https://github.com/dbierer/PHP-8-Programming-Tips-Tricks-and-Best-Practices/blob/main/ch01/php7_prop_danger.php
+  * Solution: as of PHP 7.4 you can assign data types at the property level
+* Union types
+  * https://wiki.php.net/rfc/union_types_v2
+  * https://github.com/phpcl/phpcl_core_php8_developers/blob/master/examples/core_cool_union_types.php
+### SPL
+* `SplDoublyLinkedList` Example
+  * https://github.com/dbierer/PHP-8-Programming-Tips-Tricks-and-Best-Practices/blob/main/ch05/php8_spl_spldoublylinkedlist.php
+* `SplHeap` Example
+  * https://github.com/dbierer/PHP-8-Programming-Tips-Tricks-and-Best-Practices/blob/main/ch05/php8_spl_splheap.php
+* Weak References
+  * https://wiki.php.net/rfc/weakrefs
+  * https://github.com/phpcl/phpcl_core_php8_developers/blob/master/examples/core_cool_weak_ref.php
+* Weak Map Class: alternative to `SplObjectStorage`
+  * https://wiki.php.net/rfc/weak_maps
+  * https://github.com/phpcl/phpcl_core_php8_developers/blob/master/examples/core_cool_weak_map.php
+* Stacked Iterators:
+  * https://github.com/dbierer/php7cookbook/blob/master/source/chapter03/chap_03_developing_functions_stacked_iterators.php
+  * In: https://github.com/dbierer/SimpleHtml/blob/main/src/Common/View/Html.php
+    * See `getCardIterator()` method, and
+    * `injectCards()` this line: `$iter = new LimitIterator($temp, 0, (int) $qualifier);`
+    * Limits iterations returned from the card iterator
+* `RecursiveDirectoryIterator` Example
+  * https://github.com/dbierer/classic_php_examples/blob/master/oop/oop_spl_recursive_directory_iterator.php
+* Subject/Observer Example
+  * https://github.com/dbierer/php7cookbook/blob/master/source/chapter11/chap_11_pub_sub_simple_example.php
+  * https://github.com/dbierer/php7cookbook/blob/master/source/Application/PubSub/Publisher.php
+  * https://github.com/dbierer/php7cookbook/blob/master/source/Application/PubSub/Subscriber.php
+* Autoloading
+  * `__autoload()` support has been removed in PHP 8
+  * `spl_autoload_register()` 2nd param causes it to throw `Exception` if autoloader fails to register
+  * In PHP 8 a fatal `Error` is thrown instead: 2nd param is ignored
+  * See: https://github.com/dbierer/PHP-8-Programming-Tips-Tricks-and-Best-Practices/blob/main/ch05/php7_spl_spl_autoload_register.php
+### PHP Advanced
+* Quick one-off commands:
+  * Look at the PHP command in `phpmyadmin_install.sh`
+* If you want to create an interactive PHP CLI utility, use `readline()`
+  * https://www.php.net/manual/en/function.readline.php
+* Using the *php* wrapper to implement a REST server:
+  * https://github.com/dbierer/php7cookbook/blob/master/source/chapter07/chap_07_simple_rest_server.php
+  * See line 23: https://github.com/dbierer/php7cookbook/blob/master/source/Application/Web/Rest/Server.php
+* APCu Extension
+  * Replaces the unmaintained APC extension
+  * Does not do any opcode cache: strictly for PHP developers who want to add caching to their code
+  * Cache is persistent between requests (!)
+  * Cache is stored in server shared memory
+  * Need to set the `apc.shm_size` php.ini directive (See: https://www.php.net/manual/en/apcu.configuration.php)
+  * Save to cache: `apcu_store()`
+  * Retrieve from cache: `apcu_fetch()`
+* laminas/laminas-cache
+  * https://docs.laminas.dev/laminas-cache/
+  * Replaced zendframework/zend-cache
+* OpCache
+  * Added Just-In-Time (JIT) compiler in PHP 8
+  * https://wiki.php.net/rfc/jit
