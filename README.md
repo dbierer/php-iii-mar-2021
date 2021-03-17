@@ -2,6 +2,8 @@
 
 ## TODO
 * Rework the example that implements `Serializable`
+* Q: What is this syntax called? `[$obj, 'method']`?
+* Q: Can you provide a practical example using `SplObjectStorage`?
 
 ## Homework
 * For Wed 16 Mar 2021
@@ -59,6 +61,7 @@ docker run -d -p 8080:8080 -p 50000:50000 -v jenkins_home:/var/jenkins_home jenk
   * https://github.com/dbierer/PHP-8-Programming-Tips-Tricks-and-Best-Practices/blob/main/ch05/php8_spl_spldoublylinkedlist.php
 * `SplHeap` Example
   * https://github.com/dbierer/PHP-8-Programming-Tips-Tricks-and-Best-Practices/blob/main/ch05/php8_spl_splheap.php
+  * Core algorithm, see: https://github.com/php/php-src/blob/master/ext/spl/spl_heap.c
 * Weak References
   * https://wiki.php.net/rfc/weakrefs
   * https://github.com/phpcl/phpcl_core_php8_developers/blob/master/examples/core_cool_weak_ref.php
@@ -104,3 +107,7 @@ docker run -d -p 8080:8080 -p 50000:50000 -v jenkins_home:/var/jenkins_home jenk
 * OpCache
   * Added Just-In-Time (JIT) compiler in PHP 8
   * https://wiki.php.net/rfc/jit
+
+# Q & A
+* Q: Can you modify the method signature of a class that implements an interface?
+* A: For the most part: NO!  However ... https://wiki.php.net/rfc/covariant-returns-and-contravariant-parameters
