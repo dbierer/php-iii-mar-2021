@@ -1,5 +1,8 @@
 <?php
 declare(strict_types=1);
+// for more information see: https://www.php.net/manual/en/language.types.callable.php
+
+// This is a base class that tests callbacks
 class Test
 {
 	// example of "union" types
@@ -8,7 +11,17 @@ class Test
 		return $callback($params[0], $params[1]);
 	}
 }
-// can be made callable using this syntax:
+
+// static class methods are considered callable
+class Stat
+{
+	public static function add($a, $b)
+	{
+		return $a + $b;
+	}
+}
+
+// public methods from a class instance can be made callable using this syntax:
 // [$instance, 'method']
 class Whatever
 {
@@ -17,9 +30,11 @@ class Whatever
 		return $a + $b;
 	}
 }
+$what = new Whatever();	
+
 // all PHP functions are callable
 function add($a, $b) { return $a + $b; }
-$what = new Whatever();	
+
 // any class that defines "__invoke()" are callable
 $anon = new class() {
 	public function __invoke($a, $b)
@@ -27,13 +42,15 @@ $anon = new class() {
 		return $a + $b;
 	}
 };
+
 // callback tree
 $callbacks = [
 	0 => function ($a, $b) { return $a + $b; },
 	1 => fn($a, $b) => $a + $b,
 	2 => $anon,
-	3 => [$what, 'add'],
-	4 => 'add'
+	3 => 'Stat::add',
+	4 => [$what, 'add'],
+	5 => 'add'
 ];
 // testing the callbacks: should all return "333"
 $test = new Test();

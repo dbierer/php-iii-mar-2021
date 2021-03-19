@@ -6,6 +6,23 @@
 * Q: Can you provide a practical example using `SplObjectStorage`?
 
 ## Homework
+* For Mon 22 Mar 2021
+  * Lab: New Functions
+    * Installing a Custom Extension
+      * change to this directory: `/home/vagrant/Zend/workspaces/DefaultWorkspace/php3/src/ModAdvancedTechniques/Extensions/TelemetryExtension`
+      * Modify `Makefile`:
+        * Change this: `INIT_DIR` to `/etc/php/7.4/cli/conf.d`
+        * Make sure all the directives, starting with `all:` are on their own line
+        * Arguments should be on subsequent lines with at least a single tab indent
+      * If you get this error: `make: Nothing to be done for 'all'.`
+        * Make sure that `all:` is on its own line
+        * Make sure arguments for `all:` are on the following line(s)
+        * Arguments need to have at least a single tab indent
+```
+PHP Warning:  PHP Startup: Unable to load dynamic library 'telemetry.so' (tried: /usr/lib/php/20190902/telemetry.so (libphpcpp.so.2.0: cannot open shared object file: No such file or directory), /usr/lib/php/20190902/telemetry.so.so (libphpcpp.so.2.0: cannot open shared object file: No such file or directory)) in Unknown on line 0
+```
+  * Lab: Custom Compile PHP
+    * See: https://lfphpcloud.net/articles/adventures_in_custom_compiling_php_8
 * For Wed 16 Mar 2021
   * Get VM up and running
   * OPTIONAL: update phpMyAdmin
