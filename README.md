@@ -1,17 +1,31 @@
 # PHP-III Mar 2021
 
-## TODO
-* Rework the example that implements `Serializable`
+## Q & A
 * Q: What is this syntax called? `[$obj, 'method']`?
+* A: Unable to find an official name for this syntax, but it's mentioned in the docs:
+  * See: https://www.php.net/manual/en/language.types.callable.php
 * Q: Can you provide a practical example using `SplObjectStorage`?
+* A: This example uses `SplSubject`, `SplObserver` and `SplObjectStorage` to implement a REST API
+  * https://github.com/dbierer/classic_php_examples/blob/master/oop/oop_subject_observer_storage_object.php
+* A: Good discussion about using arrays vs. `SplObjectStorage`: 
+  * https://stackoverflow.com/questions/8520241/associative-array-versus-splobjectstorage
+* Q: What is `opcache.interned_strings_buffer`?
+* A: The amount of memory used to store interned strings in MB
+* A: See: https://www.php.net/manual/en/opcache.configuration.php#ini.opcache.interned-strings-buffer
+
+* Q: What is an "interned" string?
+* A: Any strings interned in the startup phase. Common to all the threads, won't be free'd until process exit. If we want an ability to add permanent strings even after startup, it would be still possible on costs of locking in the thread safe builds.
+* A: See: https://github.com/php/php-src/blob/master/Zend/zend_string.c
+
 
 ## Homework
 * For Mon 22 Mar 2021
-  * Lab: New Functions
+  * Lab: Built-in Web Server
+  * Lab: New Functions (Custom Extension)
     * Installing a Custom Extension
       * change to this directory: `/home/vagrant/Zend/workspaces/DefaultWorkspace/php3/src/ModAdvancedTechniques/Extensions/TelemetryExtension`
       * Modify `Makefile`:
-        * Change this: `INIT_DIR` to `/etc/php/7.4/cli/conf.d`
+        * Change this: `INIT_DIR` to `/etc/php/8.0/cli/conf.d`
         * Make sure all the directives, starting with `all:` are on their own line
         * Arguments should be on subsequent lines with at least a single tab indent
       * If you get this error: `make: Nothing to be done for 'all'.`
@@ -21,7 +35,7 @@
 ```
 PHP Warning:  PHP Startup: Unable to load dynamic library 'telemetry.so' (tried: /usr/lib/php/20190902/telemetry.so (libphpcpp.so.2.0: cannot open shared object file: No such file or directory), /usr/lib/php/20190902/telemetry.so.so (libphpcpp.so.2.0: cannot open shared object file: No such file or directory)) in Unknown on line 0
 ```
-  * Lab: Custom Compile PHP
+  * Lab: Custom Compile PHP (214)
     * See: https://lfphpcloud.net/articles/adventures_in_custom_compiling_php_8
 * For Wed 16 Mar 2021
   * Get VM up and running
@@ -55,7 +69,9 @@ docker run -d -p 8080:8080 -p 50000:50000 -v jenkins_home:/var/jenkins_home jenk
   * https://github.com/dbierer/php-class-notes/blob/master/php-iii-jan-2021.md
 * Previous class repos:
   * https://github.com/dbierer/php-iii-may-2019
-
+* PHP CLI libraries
+  * https://github.com/symfony/console
+  * 
 ## Class Notes
 * DateTime
   * Format codes: https://www.php.net/manual/en/datetime.format.php
@@ -102,6 +118,7 @@ docker run -d -p 8080:8080 -p 50000:50000 -v jenkins_home:/var/jenkins_home jenk
   * `spl_autoload_register()` 2nd param causes it to throw `Exception` if autoloader fails to register
   * In PHP 8 a fatal `Error` is thrown instead: 2nd param is ignored
   * See: https://github.com/dbierer/PHP-8-Programming-Tips-Tricks-and-Best-Practices/blob/main/ch05/php7_spl_spl_autoload_register.php
+  * Composer: https://getcomposer.org/doc/04-schema.md#autoload
 ### PHP Advanced
 * Quick one-off commands:
   * Look at the PHP command in `phpmyadmin_install.sh`
@@ -110,6 +127,9 @@ docker run -d -p 8080:8080 -p 50000:50000 -v jenkins_home:/var/jenkins_home jenk
 * Using the *php* wrapper to implement a REST server:
   * https://github.com/dbierer/php7cookbook/blob/master/source/chapter07/chap_07_simple_rest_server.php
   * See line 23: https://github.com/dbierer/php7cookbook/blob/master/source/Application/Web/Rest/Server.php
+* Streams
+  * Connect streaming devices (e.g. webcams, mainframes, machines, etc.)
+    * https://www.php.net/manual/en/function.stream-socket-client.php
 * APCu Extension
   * Replaces the unmaintained APC extension
   * Does not do any opcode cache: strictly for PHP developers who want to add caching to their code
