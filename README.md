@@ -1,42 +1,43 @@
 # PHP-III Mar 2021
 
-## Q & A
-* Q: What is this syntax called? `[$obj, 'method']`?
-* A: Unable to find an official name for this syntax, but it's mentioned in the docs:
-  * See: https://www.php.net/manual/en/language.types.callable.php
-* Q: Can you provide a practical example using `SplObjectStorage`?
-* A: This example uses `SplSubject`, `SplObserver` and `SplObjectStorage` to implement a REST API
-  * https://github.com/dbierer/classic_php_examples/blob/master/oop/oop_subject_observer_storage_object.php
-* A: Good discussion about using arrays vs. `SplObjectStorage`: 
-  * https://stackoverflow.com/questions/8520241/associative-array-versus-splobjectstorage
-* Q: What is `opcache.interned_strings_buffer`?
-* A: The amount of memory used to store interned strings in MB
-* A: See: https://www.php.net/manual/en/opcache.configuration.php#ini.opcache.interned-strings-buffer
-
-* Q: What is an "interned" string?
-* A: Any strings interned in the startup phase. Common to all the threads, won't be free'd until process exit. If we want an ability to add permanent strings even after startup, it would be still possible on costs of locking in the thread safe builds.
-* A: See: https://github.com/php/php-src/blob/master/Zend/zend_string.c
-
+## TODO
+* Get APCU demo to work correctly!
+* For the JMeter load test: s/be `orderapp.com` or `orderapp`?
 
 ## Homework
+* For Wed 24 Mar 2021
+  * Lab: Phing Labs
+    * Phing Build Prerequisites
+    * Phing Build Execution
+    * Phing Deployment Update
+  * Lab: Jenkins CI
+    * Jenkins Freestyle Prerequisites
+    * Jenkins CI Freestyle Project Configuration
+      * NOTE: the URL mentioned on slides is this: https://github.com/datashuttle/PHP3OA
+      * OPTIONAL: fork the repo from datashuttle into your own github account and use that as a target repo you can then make changes and test to see if the automated process kicks in
+    * Jenkins CI Freestyle Project Build
+  * Lab: Apache JMeter: Load (Smoke) Testing
+    * Under Step #6: if `orderapp.com` doesn't work, change this to `orderapp`
 * For Mon 22 Mar 2021
   * Lab: Built-in Web Server
   * Lab: New Functions (Custom Extension)
     * Installing a Custom Extension
-      * change to this directory: `/home/vagrant/Zend/workspaces/DefaultWorkspace/php3/src/ModAdvancedTechniques/Extensions/TelemetryExtension`
-      * Modify `Makefile`:
+      * Change to this directory: `/home/vagrant/Zend/workspaces/DefaultWorkspace/php3/src/ModAdvancedTechniques/Extensions/TelemetryExtension`
+      * Copy the `Makefile` in this repo `src/ModAdvancedTechniques/Extensions/TelemetryExtension/Makefile`
         * Change this: `INIT_DIR` to `/etc/php/8.0/cli/conf.d`
-        * Make sure all the directives, starting with `all:` are on their own line
-        * Arguments should be on subsequent lines with at least a single tab indent
       * If you get this error: `make: Nothing to be done for 'all'.`
-        * Make sure that `all:` is on its own line
-        * Make sure arguments for `all:` are on the following line(s)
-        * Arguments need to have at least a single tab indent
-```
-PHP Warning:  PHP Startup: Unable to load dynamic library 'telemetry.so' (tried: /usr/lib/php/20190902/telemetry.so (libphpcpp.so.2.0: cannot open shared object file: No such file or directory), /usr/lib/php/20190902/telemetry.so.so (libphpcpp.so.2.0: cannot open shared object file: No such file or directory)) in Unknown on line 0
-```
+        * First run `make clean`
+      * Lab uses PHP-CPP
+        * See: http://www.php-cpp.com/
+        * See: http://www.php-cpp.com/documentation/your-first-extension
+        * Not yet PHP 8 ready!  Sorry :-(
+    * Rapid extension prototyping: FFI
+      * See: https://www.php.net/FFI
+      * Examples: https://github.com/dbierer/PHP-8-Programming-Tips-Tricks-and-Best-Practices/tree/main/ch04
   * Lab: Custom Compile PHP (214)
+    * Add this prefix to prevent overwriting the existing PHP installation: `--prefix=/usr/local`
     * See: https://lfphpcloud.net/articles/adventures_in_custom_compiling_php_8
+    * Read through requirements here (README): https://github.com/php/php-src
 * For Wed 16 Mar 2021
   * Get VM up and running
   * OPTIONAL: update phpMyAdmin
@@ -59,6 +60,25 @@ docker run -d -p 8080:8080 -p 50000:50000 -v jenkins_home:/var/jenkins_home jenk
       * replace `violations` with `Violations`
       * replace `htmlpublisher` with `Build-Publisher` (???)
       * replace `version number` with `Version Number`
+
+## Q & A
+* Q: What is this syntax called? `[$obj, 'method']`?
+* A: Unable to find an official name for this syntax, but it's mentioned in the docs:
+  * See: https://www.php.net/manual/en/language.types.callable.php
+
+* Q: Can you provide a practical example using `SplObjectStorage`?
+* A: This example uses `SplSubject`, `SplObserver` and `SplObjectStorage` to implement a REST API
+  * https://github.com/dbierer/classic_php_examples/blob/master/oop/oop_subject_observer_storage_object.php
+* A: Good discussion about using arrays vs. `SplObjectStorage`: 
+  * https://stackoverflow.com/questions/8520241/associative-array-versus-splobjectstorage
+
+* Q: What is `opcache.interned_strings_buffer`?
+* A: The amount of memory used to store interned strings in MB
+* A: See: https://www.php.net/manual/en/opcache.configuration.php#ini.opcache.interned-strings-buffer
+
+* Q: What is an "interned" string?
+* A: Any strings interned in the startup phase. Common to all the threads, won't be free'd until process exit. If we want an ability to add permanent strings even after startup, it would be still possible on costs of locking in the thread safe builds.
+* A: See: https://github.com/php/php-src/blob/master/Zend/zend_string.c
 
 ## VM
 * Update phpMyAdmin using this script:
@@ -144,6 +164,74 @@ docker run -d -p 8080:8080 -p 50000:50000 -v jenkins_home:/var/jenkins_home jenk
 * OpCache
   * Added Just-In-Time (JIT) compiler in PHP 8
   * https://wiki.php.net/rfc/jit
+* Custom PHP `configure` example:
+```
+sudo apt install libkrb5-dev zlib1g-dev libbz2-dev libcurl4-openssl-dev libgdbm-dev 
+./configure  \
+    --prefix=/usr/local \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --datadir=/usr/share/php \
+    --mandir=/usr/share/man \
+    --enable-fpm \
+    --with-fpm-user=apache \
+    --with-fpm-group=apache \
+    --with-config-file-path=/etc \
+    --with-zlib \
+    --enable-bcmath \
+    --with-bz2 \
+    --enable-calendar \
+    --enable-dba=shared \
+    --with-gdbm \
+    --with-gmp \
+    --enable-ftp \
+    --with-gettext=/usr \
+    --enable-mbstring \
+    --enable-pcntl \
+    --with-pspell \
+    --with-readline \
+    --with-snmp \
+    --with-mysql-sock=/run/mysqld/mysqld.sock \
+    --with-curl \
+    --with-openssl \
+    --with-openssl-dir=/usr \
+    --with-mhash \
+    --enable-intl \
+    --with-libdir=/lib64 \
+    --enable-sockets \
+    --with-libxml \
+    --enable-soap \
+    --enable-gd \
+    --with-jpeg \
+    --with-freetype \
+    --enable-exif \
+    --with-xsl \
+    --with-pgsql \
+    --with-pdo-mysql=/usr \
+    --with-pdo-pgsql \
+    --with-mysqli \
+    --with-pdo-dblib \
+    --with-ldap \
+    --with-ldap-sasl \
+    --enable-shmop \
+    --enable-sysvsem \
+    --enable-sysvshm \
+    --enable-sysvmsg \
+    --with-tidy \
+    --with-expat \
+    --with-enchant \
+    --with-imap=/usr/local/imap-2007f \
+    --with-imap-ssl=/usr/include/openssl \
+    --with-kerberos=/usr/include/krb5 \
+    --with-sodium=/usr \
+    --with-zip \
+    --enable-opcache \
+    --with-pear \
+    --with-ffi
+```
+## Continuous Delivery
+* BitBucket Pipelines
+  * 
 
 # Q & A
 * Q: Can you modify the method signature of a class that implements an interface?
