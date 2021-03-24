@@ -1,38 +1,61 @@
 # PHP-III Mar 2021
 
 ## TODO
+* Create a Dockerfile + docker-compose.yml file for the REST API lab
+* Restore screenshots from Apigility lab
 * Get APCU demo to work correctly!
-  * Seel `apcu_test.php` in the course repo
-* For the JMeter load test: s/be `orderapp.com` or `orderapp`?
+  * See `apcu_test.php` in the course repo
+* A: For the JMeter load test: s/be `orderapp.com` or `orderapp`?
+* A: Either one works
+* Get Phing lab updated for PHP 8
+
+* A: Alternatives to Google Maps API
 
 ## Homework
 * For Fri 26 Mar 2021
+  * Docker Labs:
+    * Lab: Docker Image Build
+    * Lab: New Image Creation
+    * Lab: New Image Creation
+  * Docker Compose Labs:
+    * Lab: Configuration Review and Pre-Built Service Execution
+    * Lab: Configuration Review and Partial-Build Service Execution
   * Lab: Building a REST Service API
     * Not PHP 8 ready yet!!!
+    * Add disk space to hold Docker images
+      * Bring down VM
+      * Add new SATA hard drive
+      * Bring VM back up
+      * Run `Disks` app
+      * Select new drive
+      * Format using `ext4`
+      * Make a note of mount point
+    * Modify Docker to use new mount point
+      * See: https://www.guguweb.com/2019/02/07/how-to-move-docker-data-directory-to-another-location-on-ubuntu
     * Install `Laminas API Tools`:
+      * Clone this repository into the VM under `/home/vagrant`
 ```
-cd /home/vagrant/Zend/workspaces/DefaultWorkspace
+cd
+git clone https://github.com/dbierer/php-ii-mar-2021.git
+cd php-ii-mar-2021
 cd apigility
-rm -rf *
-rm -rf .*
-docker run -l apigility -v `pwd`:/home -p 9999:80 -d asclinux/linuxforphp-8.2-ultimate:7.4-nts
-docker exec -it apigility /bin/bash
-cd /home
-wget https://getcomposer.org/composer.phar
-php composer.phar create-project laminas-api-tools/api-tools-skeleton apigility
-mv /srv/www /srv/www.OLD
-ln -s /home/apigility/public /srv/www
+docker-compose up -d
 ```
-    * From your browser: `http://localhost:9999`
-    * Change any `Zend` references to `Laminas`
+	* From your browser: `http://10.10.10.10/`
   * Lab: REST Service Code Review and Stub Development
+    * Change any `Zend` references to `Laminas`
   * Lab: REST Service Model Code Setup
   * Lab: REST Service Testing
+    * Import postman pre-defined requests:
+      * `/home/vagrant/Zend/workspaces/DefaultWorkspace/php3/src/ModWebAPI/Flying Elephant Apigility.Complete.postman_collection.json`
+    * Either map `apigility` to the container IP address (s/be `10.10.10.10`) in the `/etc/hosts` file, or 
+    * Swap the hostname `apigility` for the container IP address
 * For Wed 24 Mar 2021
   * Lab: Phing Labs
     * Phing Build Prerequisites
     * Phing Build Execution
     * Phing Deployment Update
+    * NOTE: appears it's not PHP 8 compatible
   * Lab: Jenkins CI
     * Jenkins Freestyle Prerequisites
     * Jenkins CI Freestyle Project Configuration
@@ -255,7 +278,25 @@ sudo apt install libkrb5-dev zlib1g-dev libbz2-dev libcurl4-openssl-dev libgdbm-
 ## Continuous Delivery
 * BitBucket Pipelines
 
+## Docker
+* Sample `Dockerfile`
+  * https://github.com/zendtech/Laminas-Level-1-Attendee/blob/master/docker/Dockerfile
+* Sample `docker-compose.yml`
+  * https://github.com/zendtech/Laminas-Level-1-Attendee/blob/master/docker-compose.yml
+  * https://github.com/dbierer/Learn-MongoDB-4.x/blob/master/chapters/15/docker-compose.yml
+* To run Docker on Windows: `Docker Desktop for Windows`
+* To run Docker on Mac: `Docker Desktop for Mac`
+* Cleanup
+  * To remove an image: `docker image rm ID`
+  * To remove an container: `docker container rm ID`
+  * To get rid of "dangling" images, containers, etc: `docker system prune`
+* From Victor:
+  * You can use harbor as a private registry to store your images. It has a function called proxy cache , which allows you pull form your private registry the docker hub images (or from other registry). 
+  * Example: docker pull myprivateregistry.com/proxy-cache/library/ubuntu:20.04 will get ubuntu:20.04 from docker hub, store it on your registry and serve it. (oficial images must be called library/image:tag)
+
 ## API
+* Geonames Project: https://geonames.org
+
 * `Apigility` is now `Laminas API Tools`
   * https://api-tools.getlaminas.org/
 

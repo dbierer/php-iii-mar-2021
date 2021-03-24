@@ -1,0 +1,20 @@
+version: "3"
+services:
+  laminas-1:
+    container_name: laminas_1
+    hostname: laminas
+    image: laminas_1
+    volumes:
+     - ".:/home"
+    build: .
+    restart: always
+    command: /tmp/init.sh
+    networks:
+      app_net:
+        ipv4_address: 10.10.10.10
+networks:
+  app_net:
+    ipam:
+      driver: default
+      config:
+        - subnet: "10.10.10.0/24"
