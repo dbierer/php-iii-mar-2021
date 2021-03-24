@@ -2,9 +2,32 @@
 
 ## TODO
 * Get APCU demo to work correctly!
+  * Seel `apcu_test.php` in the course repo
 * For the JMeter load test: s/be `orderapp.com` or `orderapp`?
 
 ## Homework
+* For Fri 26 Mar 2021
+  * Lab: Building a REST Service API
+    * Not PHP 8 ready yet!!!
+    * Install `Laminas API Tools`:
+```
+cd /home/vagrant/Zend/workspaces/DefaultWorkspace
+cd apigility
+rm -rf *
+rm -rf .*
+docker run -l apigility -v `pwd`:/home -p 9999:80 -d asclinux/linuxforphp-8.2-ultimate:7.4-nts
+docker exec -it apigility /bin/bash
+cd /home
+wget https://getcomposer.org/composer.phar
+php composer.phar create-project laminas-api-tools/api-tools-skeleton apigility
+mv /srv/www /srv/www.OLD
+ln -s /home/apigility/public /srv/www
+```
+    * From your browser: `http://localhost:9999`
+    * Change any `Zend` references to `Laminas`
+  * Lab: REST Service Code Review and Stub Development
+  * Lab: REST Service Model Code Setup
+  * Lab: REST Service Testing
 * For Wed 24 Mar 2021
   * Lab: Phing Labs
     * Phing Build Prerequisites
@@ -231,7 +254,10 @@ sudo apt install libkrb5-dev zlib1g-dev libbz2-dev libcurl4-openssl-dev libgdbm-
 ```
 ## Continuous Delivery
 * BitBucket Pipelines
-  * 
+
+## API
+* `Apigility` is now `Laminas API Tools`
+  * https://api-tools.getlaminas.org/
 
 # Q & A
 * Q: Can you modify the method signature of a class that implements an interface?
