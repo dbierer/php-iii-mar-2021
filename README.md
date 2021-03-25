@@ -1,8 +1,6 @@
 # PHP-III Mar 2021
 
 ## TODO
-* Create a Dockerfile + docker-compose.yml file for the REST API lab
-* Restore screenshots from Apigility lab
 * Get APCU demo to work correctly!
   * See `apcu_test.php` in the course repo
 * A: For the JMeter load test: s/be `orderapp.com` or `orderapp`?
@@ -41,14 +39,15 @@ cd php-ii-mar-2021
 cd apigility
 docker-compose up -d
 ```
-	* From your browser: `http://10.10.10.10/`
+    * From your browser: `http://10.10.10.10/`
+    * Screenshots from original lab are in `/path/to/this/repo/apigility/screenshots`
   * Lab: REST Service Code Review and Stub Development
     * Change any `Zend` references to `Laminas`
   * Lab: REST Service Model Code Setup
   * Lab: REST Service Testing
     * Import postman pre-defined requests:
       * `/home/vagrant/Zend/workspaces/DefaultWorkspace/php3/src/ModWebAPI/Flying Elephant Apigility.Complete.postman_collection.json`
-    * Either map `apigility` to the container IP address (s/be `10.10.10.10`) in the `/etc/hosts` file, or 
+    * Either map `apigility` to the container IP address (s/be `10.10.10.10`) in the `/etc/hosts` file, or
     * Swap the hostname `apigility` for the container IP address
 * For Wed 24 Mar 2021
   * Lab: Phing Labs
@@ -115,7 +114,7 @@ docker run -d -p 8080:8080 -p 50000:50000 -v jenkins_home:/var/jenkins_home jenk
 * Q: Can you provide a practical example using `SplObjectStorage`?
 * A: This example uses `SplSubject`, `SplObserver` and `SplObjectStorage` to implement a REST API
   * https://github.com/dbierer/classic_php_examples/blob/master/oop/oop_subject_observer_storage_object.php
-* A: Good discussion about using arrays vs. `SplObjectStorage`: 
+* A: Good discussion about using arrays vs. `SplObjectStorage`:
   * https://stackoverflow.com/questions/8520241/associative-array-versus-splobjectstorage
 
 * Q: What is `opcache.interned_strings_buffer`?
@@ -137,7 +136,7 @@ docker run -d -p 8080:8080 -p 50000:50000 -v jenkins_home:/var/jenkins_home jenk
   * https://github.com/dbierer/php-iii-may-2019
 * PHP CLI libraries
   * https://github.com/symfony/console
-  * 
+  *
 ## Class Notes
 * DateTime
   * Format codes: https://www.php.net/manual/en/datetime.format.php
@@ -212,7 +211,7 @@ docker run -d -p 8080:8080 -p 50000:50000 -v jenkins_home:/var/jenkins_home jenk
   * https://wiki.php.net/rfc/jit
 * Custom PHP `configure` example:
 ```
-sudo apt install libkrb5-dev zlib1g-dev libbz2-dev libcurl4-openssl-dev libgdbm-dev 
+sudo apt install libkrb5-dev zlib1g-dev libbz2-dev libcurl4-openssl-dev libgdbm-dev
 ./configure  \
     --prefix=/usr/local \
     --sysconfdir=/etc \
@@ -291,7 +290,7 @@ sudo apt install libkrb5-dev zlib1g-dev libbz2-dev libcurl4-openssl-dev libgdbm-
   * To remove an container: `docker container rm ID`
   * To get rid of "dangling" images, containers, etc: `docker system prune`
 * From Victor:
-  * You can use harbor as a private registry to store your images. It has a function called proxy cache , which allows you pull form your private registry the docker hub images (or from other registry). 
+  * You can use harbor as a private registry to store your images. It has a function called proxy cache , which allows you pull form your private registry the docker hub images (or from other registry).
   * Example: docker pull myprivateregistry.com/proxy-cache/library/ubuntu:20.04 will get ubuntu:20.04 from docker hub, store it on your registry and serve it. (oficial images must be called library/image:tag)
 
 ## API
