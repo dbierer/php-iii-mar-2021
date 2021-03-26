@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
 echo "Setting up Apache ..."
-echo "ServerName %%HOST%%" >> /etc/httpd/httpd.conf
+echo "ServerName mezzio-project" >> /etc/httpd/httpd.conf
 mv -f /srv/www /srv/www.OLD 
-ln -s /home/%%HOST%%/public /srv/www
+ln -s /home/mezzio-project/public /srv/www
 
 echo "Setting permissions ..."
 chown apache:apache /srv/www

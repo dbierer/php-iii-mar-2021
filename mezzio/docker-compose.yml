@@ -1,9 +1,9 @@
 version: "3"
 services:
-  api-tools:
-    container_name: api-tools
-    hostname: api-tools
-    image: api-tools
+  mezzio-project:
+    container_name: mezzio-project
+    hostname: mezzio-project
+    image: mezzio-project
     volumes:
      - ".:/home"
     build: .
@@ -11,10 +11,10 @@ services:
     command: /tmp/init.sh
     networks:
       app_net:
-        ipv4_address: 10.10.10.10
+        ipv4_address: 10.20.20.20
 networks:
   app_net:
     ipam:
       driver: default
       config:
-        - subnet: "10.10.10.0/24"
+        - subnet: "10.20.20.0/24"

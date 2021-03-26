@@ -1,15 +1,35 @@
 # PHP-III Mar 2021
 
 ## TODO
-* Get APCU demo to work correctly!
-  * See `apcu_test.php` in the course repo
-* A: For the JMeter load test: s/be `orderapp.com` or `orderapp`?
-* A: Either one works
 * Get Phing lab updated for PHP 8
-
 * A: Alternatives to Google Maps API
+* Make arrangements with Nicole to get updated PDFs to the group
+* Q: How you grab route parameters in Mezzio?
+* A: 
 
 ## Homework
+* Last Labs
+  * Mezzio / Middleware Labs
+      * If not already done, this repository into the VM under `/home/vagrant`
+```
+cd
+git clone https://github.com/dbierer/php-iii-mar-2021.git
+cd ~/php-iii-mar-2021/mezzio
+cp ~/Zend/workspaces/DefaultWorkspace/php3/data/php3.sql .
+docker-compose up -d
+```
+    * From your browser: `http://10.10.10.10/`
+	* The `Dockerfile` installs the Mezzio skeleton under `/home/mezzio-project` inside the container
+	* You can do the lab from there
+	* To bring the container offline:
+```
+cd ~/php-iii-mar-2021/mezzio
+docker-compose down
+```
+  * For this lab to work, you need to first do the `Laminas API Tools` lab (see below)
+    * RE: `Lab: FlyingElephant API Middleware Setup`
+      * The source code for the "FlyingElephant" project will become this:
+        * `~/php-iii-mar-2021/apigility/api-tools/`
 * For Fri 26 Mar 2021
   * Docker Labs:
     * Lab: Docker Image Build
@@ -34,16 +54,54 @@
       * Clone this repository into the VM under `/home/vagrant`
 ```
 cd
-git clone https://github.com/dbierer/php-ii-mar-2021.git
-cd php-ii-mar-2021
-cd apigility
+git clone https://github.com/dbierer/php-iii-mar-2021.git
+cd php-iii-mar-2021/apigility
+cp ~/Zend/workspaces/DefaultWorkspace/php3/data/php3.sql .
 docker-compose up -d
 ```
     * From your browser: `http://10.10.10.10/`
-    * Screenshots from original lab are in `/path/to/this/repo/apigility/screenshots`
-  * Lab: REST Service Code Review and Stub Development
-    * Change any `Zend` references to `Laminas`
-  * Lab: REST Service Model Code Setup
+	* The `Dockerfile` installs the Laminas API Tools under `/home/api-tools` inside the container
+	* You can do the lab from there
+    * Screenshots from original lab are in `~/php-iii-mar-2021/apigility/screenshots`
+	* To bring the container offline:
+```
+cd ~/php-iii-mar-2021/apigility
+docker-compose down
+```
+  * REVISED LAB: REST API Using Laminas API Tools
+    * Reset permissions:
+      * From the VM (*not* inside the Docker container):
+```
+$ chown -R vagrant ~/php-iii-mar-2021/apigility
+$ chmod -R 775 ~/php-iii-mar-2021/apigility
+```
+      * From *inside* the the Docker container:
+```
+$ docker exec -it api-tools /bin/bash
+# chgrp -R apache /home/apigility
+# chmod -R 775 /home/apigility
+```
+    * Set up Docker container using instructions above
+    * From the browser on the VM go to `http://10.10.10.10/`
+    * Select `Database` and then `New DB Adapter`
+      * Name: `PropulsionAdapter`
+      * Driver Type: `pdo_mysql`
+      * Database: `php3`
+      * Username: `vagrant`
+      * Password: `vagrant`
+      * SAVE
+    * Click `New API` named `FlyingElephantService`
+    * Click `New Service` 
+      * Select the `DB Connected` tab
+      * Select the `PropulsionAdapter`
+      * Select the `propulsion_systems` table
+      * Click `Create Service`
+    * From the left menu click on `propulsion_systems`
+      * Complete the service using the screenshots
+      * The fields will be created for you from the database table columns info
+    * Don't bother with the `Authentication` section unless you have time
+    * Don't copy any files: the only purpose those serve is to simulate the database
+      * No longer needed since it's now a "database-connected" service
   * Lab: REST Service Testing
     * Import postman pre-defined requests:
       * `/home/vagrant/Zend/workspaces/DefaultWorkspace/php3/src/ModWebAPI/Flying Elephant Apigility.Complete.postman_collection.json`
@@ -107,6 +165,13 @@ docker run -d -p 8080:8080 -p 50000:50000 -v jenkins_home:/var/jenkins_home jenk
       * replace `version number` with `Version Number`
 
 ## Q & A
+* Q: Do you have an APCU demo?
+* A: See `apcu_test.php` in the course repo
+* A: Need to add `apcu.enable=1` and `apc.shm_size=32M` to `/etc/php/8.0/apache2/php.ini` and run from a browser to have the demo work
+
+* Q: For the JMeter load test: s/be `orderapp.com` or `orderapp`?
+* A: Either one works
+
 * Q: What is this syntax called? `[$obj, 'method']`?
 * A: Unable to find an official name for this syntax, but it's mentioned in the docs:
   * See: https://www.php.net/manual/en/language.types.callable.php
@@ -136,7 +201,7 @@ docker run -d -p 8080:8080 -p 50000:50000 -v jenkins_home:/var/jenkins_home jenk
   * https://github.com/dbierer/php-iii-may-2019
 * PHP CLI libraries
   * https://github.com/symfony/console
-  *
+
 ## Class Notes
 * DateTime
   * Format codes: https://www.php.net/manual/en/datetime.format.php
@@ -299,6 +364,24 @@ sudo apt install libkrb5-dev zlib1g-dev libbz2-dev libcurl4-openssl-dev libgdbm-
 * `Apigility` is now `Laminas API Tools`
   * https://api-tools.getlaminas.org/
 
+## PSR and Middleware
+* Actual implementation of `Psr\Http\Message\RequestInterface`:
+  * https://github.com/laminas/laminas-diactoros/blob/2.6.x/src/Request.php
+* App solely based upon Stratigility:
+  * https://github.com/dbierer/strat_post
+* Mezzio Skeleton App
+  * https://github.com/mezzio/mezzio-skeleton
+## Design Patterns
+* Decorator Pattern
+  * One aspect: take a class and extend it, adding, removing or modifying functionality
+  * Another aspect: provide wrapping that adds, removes or modifies core functionality *without* extending a class
+    * Example: https://github.com/laminas/laminas-validator/blob/2.15.x/src/Regex.php
+* Observer Pattern
+  * See: https://github.com/dbierer/classic_php_examples/blob/master/oop/oop_subject_observer_storage_object.php
+* Adapter Pattern
+  * Example: PDO or PDOStatement classes have a uniform API that does not change regardless of the database
+  * Each PDO instance has an embedded PDODriver class that actually communicates with the database
+  * See: https://www.php.net/pdo
 # Q & A
 * Q: Can you modify the method signature of a class that implements an interface?
 * A: For the most part: NO!  However ... https://wiki.php.net/rfc/covariant-returns-and-contravariant-parameters
